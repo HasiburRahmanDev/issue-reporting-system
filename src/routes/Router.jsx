@@ -8,6 +8,7 @@ import Register from "../pages/Auth/Register";
 import { Component } from "react";
 import AllIssues from "../pages/AllIssues/AllIssues";
 import IssueDetails from "../pages/IssueDetails/IssueDetails";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -38,7 +39,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/issue-details",
-        element: <IssueDetails></IssueDetails>,
+        element: (
+          <PrivateRoute>
+            <IssueDetails></IssueDetails>
+          </PrivateRoute>
+        ),
       },
     ],
   },
