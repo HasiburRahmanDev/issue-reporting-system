@@ -9,6 +9,7 @@ import { Component } from "react";
 import AllIssues from "../pages/AllIssues/AllIssues";
 import IssueDetails from "../pages/IssueDetails/IssueDetails";
 import PrivateRoute from "./PrivateRoute";
+import SubmitIssue from "../pages/submitIssue/SubmitIssue";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <IssueDetails></IssueDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/submit-issue",
+        element: (
+          <PrivateRoute>
+            <SubmitIssue></SubmitIssue>
           </PrivateRoute>
         ),
       },

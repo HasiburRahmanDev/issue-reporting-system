@@ -1,5 +1,6 @@
 import React from "react";
 import bannerImg from "../../../assets/clean.jpg";
+import { NavLink } from "react-router";
 
 const Banner = () => {
   return (
@@ -14,7 +15,9 @@ const Banner = () => {
           streetlights, bridges, and other public facilities. Your feedback
           ensures safer and better infrastructure for everyone.
         </p>
-        <button className="btn btn-primary">Submit an Issue</button>
+        <NavLink to="/submit-issue" className="btn btn-primary">
+          Report an Issue
+        </NavLink>
       </div>
 
       {/* Right Side: Image */}
