@@ -2,22 +2,28 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import UseAuth from "../../hooks/UseAuth";
 
 const SubmitIssue = () => {
   const navigate = useNavigate();
 
   // Example user data (replace with real auth/user context)
-  const user = {
-    id: "citizen123",
-    subscription: "free", // "free" or "premium"
-    reportedIssuesCount: 2, // track how many issues user has already reported
-  };
+  //   const user = {
+  //     id: "citizen123",
+  //     subscription: "free", // "free" or "premium"
+  //     reportedIssuesCount: 2, // track how many issues user has already reported
+  //   };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { user } = UseAuth();
+
+  const axiosSecure = useAxiosSecure();
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -69,11 +75,16 @@ const SubmitIssue = () => {
       confirmButtonText: "Yes, submit it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "issued!",
-          text: "Your issue has been submitted",
-          icon: "success",
+        // save the parcel info into database
+
+        axiosSecure.post("/issues", data).then((res) => {
+          console.log("after saving parcel", res.data);
         });
+        // Swal.fire({
+        //   title: "issued!",
+        //   text: "Your issue has been submitted",
+        //   icon: "success",
+        // });
       }
     });
   };
@@ -121,6 +132,24 @@ const SubmitIssue = () => {
                 {errors.title && (
                   <span className="text-error text-sm">
                     {errors.title.message}
+                  </span>
+                )}
+              </div>
+              {/* submitter email */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Your email</span>
+                </label>
+                <input
+                  type="email"
+                  defaultValue={user?.email}
+                  placeholder="enter your email"
+                  className="input input-bordered w-full"
+                  {...register("email", { required: "your email is required" })}
+                />
+                {errors.email && (
+                  <span className="text-error text-sm">
+                    {errors.email.message}
                   </span>
                 )}
               </div>

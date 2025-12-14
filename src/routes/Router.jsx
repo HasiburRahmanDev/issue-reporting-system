@@ -10,6 +10,9 @@ import AllIssues from "../pages/AllIssues/AllIssues";
 import IssueDetails from "../pages/IssueDetails/IssueDetails";
 import PrivateRoute from "./PrivateRoute";
 import SubmitIssue from "../pages/submitIssue/SubmitIssue";
+import DashboardLayout from "../layouts/DashboardLayout";
+import MyIssues from "../pages/Dashboard/MyIssues/MyIssues";
+import DashboardOverview from "../pages/Dashboard/DashboardOverview/DashboardOverview";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +56,24 @@ export const router = createBrowserRouter([
             <SubmitIssue></SubmitIssue>
           </PrivateRoute>
         ),
+      },
+      {
+        path: "dashboard",
+        element: (
+          <PrivateRoute>
+            <DashboardLayout></DashboardLayout>
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            index: true,
+            Component: DashboardOverview,
+          },
+          {
+            path: "my-issues",
+            Component: MyIssues,
+          },
+        ],
       },
     ],
   },
