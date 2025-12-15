@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 
 const DashboardLayout = () => {
   return (
@@ -67,6 +67,12 @@ const DashboardLayout = () => {
                 </svg>
                 <span className="is-drawer-close:hidden">Homepage</span>
               </Link>
+            </li>
+
+            {/* our dashboard links */}
+
+            <li>
+              <NavLink to="/dashboard/my-issues">My Issues</NavLink>
             </li>
 
             {/* List item */}
