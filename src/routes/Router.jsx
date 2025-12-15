@@ -5,14 +5,12 @@ import ErrorPage from "../pages/error/ErrorPage";
 import Coverage from "../pages/coverage/Coverage";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
-import { Component } from "react";
 import AllIssues from "../pages/AllIssues/AllIssues";
 import IssueDetails from "../pages/IssueDetails/IssueDetails";
 import PrivateRoute from "./PrivateRoute";
 import SubmitIssue from "../pages/submitIssue/SubmitIssue";
 import DashboardLayout from "../layouts/DashboardLayout";
-import MyIssues from "../pages/Dashboard/MyIssues/MyIssues";
-import DashboardOverview from "../pages/Dashboard/DashboardOverview/DashboardOverview";
+import MyIssues from "../pages/Dashboard/MyIssues";
 
 export const router = createBrowserRouter([
   {
@@ -57,23 +55,19 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+    ],
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
       {
-        path: "dashboard",
-        element: (
-          <PrivateRoute>
-            <DashboardLayout></DashboardLayout>
-          </PrivateRoute>
-        ),
-        children: [
-          {
-            index: true,
-            Component: DashboardOverview,
-          },
-          {
-            path: "my-issues",
-            Component: MyIssues,
-          },
-        ],
+        path: "my-issues",
+        Component: MyIssues,
       },
     ],
   },
