@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 function IssueDetails() {
   const { id } = useParams();
@@ -119,8 +119,15 @@ function IssueDetails() {
             {loggedInUser === issue.submittedBy && (
               <button className="btn btn-error">Delete</button>
             )}
-            {!issue.boosted && (
-              <button className="btn btn-accent">Boost Priority (100tk)</button>
+            {issue.paymentStatus === "paid" ? (
+              <p className="btn btn-info">Boosted</p>
+            ) : (
+              <Link
+                to={`/dashboard/payment/${issue.id}`}
+                className="btn btn-accent"
+              >
+                Boost Priority (100tk)
+              </Link>
             )}
           </div>
         </div>

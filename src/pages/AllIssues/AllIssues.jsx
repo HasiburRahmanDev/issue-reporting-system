@@ -1,40 +1,53 @@
 import React from "react";
 import { Link } from "react-router";
+import UseAuth from "../../hooks/UseAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 function AllIssues() {
-  // Static sample issues
-  const issues = [
-    {
-      id: 1,
-      title: "Broken Streetlight",
-      category: "Infrastructure",
-      status: "Open",
-      priority: "High",
-      location: "Main Road, Sector 5",
-      image: "https://via.placeholder.com/300x200.png?text=Streetlight",
-      upvotes: 12,
+  const { user } = UseAuth();
+  const axiosSecure = useAxiosSecure();
+  const { data: issues = [] } = useQuery({
+    queryKey: ["myIssues", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/issues");
+      return res.data;
     },
-    {
-      id: 2,
-      title: "Pothole on Avenue",
-      category: "Roads",
-      status: "Resolved",
-      priority: "Normal",
-      location: "Downtown Avenue",
-      image: "https://via.placeholder.com/300x200.png?text=Pothole",
-      upvotes: 8,
-    },
-    {
-      id: 3,
-      title: "Damaged Bridge Railings",
-      category: "Safety",
-      status: "In Progress",
-      priority: "High",
-      location: "River Bridge",
-      image: "https://via.placeholder.com/300x200.png?text=Bridge",
-      upvotes: 20,
-    },
-  ];
+  });
+
+  //   // Static sample issues
+  //   const issues = [
+  //     {
+  //       id: 1,
+  //       title: "Broken Streetlight",
+  //       category: "Infrastructure",
+  //       status: "Open",
+  //       priority: "High",
+  //       location: "Main Road, Sector 5",
+  //       image: "https://via.placeholder.com/300x200.png?text=Streetlight",
+  //       upvotes: 12,
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Pothole on Avenue",
+  //       category: "Roads",
+  //       status: "Resolved",
+  //       priority: "Normal",
+  //       location: "Downtown Avenue",
+  //       image: "https://via.placeholder.com/300x200.png?text=Pothole",
+  //       upvotes: 8,
+  //     },
+  //     {
+  //       id: 3,
+  //       title: "Damaged Bridge Railings",
+  //       category: "Safety",
+  //       status: "In Progress",
+  //       priority: "High",
+  //       location: "River Bridge",
+  //       image: "https://via.placeholder.com/300x200.png?text=Bridge",
+  //       upvotes: 20,
+  //     },
+  //   ];
 
   return (
     <div className="p-8">

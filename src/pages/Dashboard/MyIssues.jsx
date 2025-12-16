@@ -2,17 +2,46 @@ import { useQuery } from "@tanstack/react-query";
 import UseAuth from "../../hooks/UseAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
 
 const MyIssues = () => {
   const { user } = UseAuth();
   const axiosSecure = useAxiosSecure();
-  const { data: issues = [] } = useQuery({
+  const { data: issues = [], refetch } = useQuery({
     queryKey: ["myIssues", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/issues?email=${user.email}`);
       return res.data;
     },
   });
+
+  const handleIssueDelete = (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/issues/${id}`).then((res) => {
+          console.log(res.data);
+
+          if (res.data.deletedCount) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">My Issues</h1>
@@ -38,7 +67,12 @@ const MyIssues = () => {
               </div>
               <div className="card-actions justify-end mt-4">
                 <button className="btn btn-warning btn-sm">Edit</button>
-                <button className="btn btn-error btn-sm">Delete</button>
+                <button
+                  onClick={() => handleIssueDelete(issue._id)}
+                  className="btn btn-error btn-sm"
+                >
+                  Delete
+                </button>
                 <Link
                   to={`/issue/${issue.id}`}
                   className="btn btn-primary btn-sm"
@@ -50,8 +84,6 @@ const MyIssues = () => {
           </div>
         ))}
       </div>
-
-      {/* Edit Modal */}
     </div>
   );
 };

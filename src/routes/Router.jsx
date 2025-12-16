@@ -11,6 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import SubmitIssue from "../pages/submitIssue/SubmitIssue";
 import DashboardLayout from "../layouts/DashboardLayout";
 import MyIssues from "../pages/Dashboard/MyIssues";
+import Payment from "../pages/Dashboard/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
       {
         path: "my-issues",
         Component: MyIssues,
+      },
+      {
+        path: "payment/:issueId",
+        Component: Payment,
       },
     ],
   },
