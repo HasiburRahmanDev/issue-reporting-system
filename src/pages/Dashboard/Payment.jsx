@@ -17,7 +17,7 @@ const Payment = () => {
 
   const handlePayment = async () => {
     const paymentInfo = {
-      cost: 10000,
+      cost: 100,
       issueId: issue._id,
       email: issue.email,
       issueTitle: issue.title,
