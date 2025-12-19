@@ -12,6 +12,8 @@ import SubmitIssue from "../pages/submitIssue/SubmitIssue";
 import DashboardLayout from "../layouts/DashboardLayout";
 import MyIssues from "../pages/Dashboard/MyIssues";
 import Payment from "../pages/Dashboard/Payment";
+import PaymentSuccess from "../pages/Dashboard/PaymentSuccess";
+import PaymentCancelled from "../pages/Dashboard/PaymentCancelled";
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +43,7 @@ export const router = createBrowserRouter([
         Component: Register,
       },
       {
-        path: "/issue-details",
+        path: "/issue-details/:issueId",
         element: (
           <PrivateRoute>
             <IssueDetails></IssueDetails>
@@ -73,6 +75,14 @@ export const router = createBrowserRouter([
       {
         path: "payment/:issueId",
         Component: Payment,
+      },
+      {
+        path: "payment-success",
+        Component: PaymentSuccess,
+      },
+      {
+        path: "payment-cancelled",
+        Component: PaymentCancelled,
       },
     ],
   },

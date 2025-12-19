@@ -8,9 +8,10 @@ function AllIssues() {
   const { user } = UseAuth();
   const axiosSecure = useAxiosSecure();
   const { data: issues = [] } = useQuery({
-    queryKey: ["myIssues", user?.email],
+    queryKey: ["allIssues"],
     queryFn: async () => {
       const res = await axiosSecure.get("/issues");
+      console.log("All issues data:", res.data); // Debug log
       return res.data;
     },
   });
@@ -88,7 +89,7 @@ function AllIssues() {
       {/* Issues Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {issues.map((issue) => (
-          <div key={issue.id} className="card bg-base-100 shadow-md">
+          <div key={issue._id} className="card bg-base-100 shadow-md">
             <figure>
               <img
                 src={issue.image}
@@ -128,7 +129,10 @@ function AllIssues() {
                 <button className="btn btn-outline btn-sm flex items-center gap-2">
                   👍 {issue.upvotes}
                 </button>
-                <Link to="/issue-details" className="btn btn-primary btn-sm">
+                <Link
+                  to={`/issue-details/${issue._id}`}
+                  className="btn btn-primary btn-sm"
+                >
                   View Details
                 </Link>
               </div>

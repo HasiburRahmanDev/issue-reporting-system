@@ -42,6 +42,7 @@ const MyIssues = () => {
       }
     });
   };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">My Issues</h1>
@@ -74,7 +75,7 @@ const MyIssues = () => {
                   Delete
                 </button>
                 <Link
-                  to={`/issue/${issue.id}`}
+                  to={`/issue-details/${issue._id}`}
                   className="btn btn-primary btn-sm"
                 >
                   View Details

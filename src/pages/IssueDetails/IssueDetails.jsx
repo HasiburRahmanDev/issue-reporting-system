@@ -1,24 +1,26 @@
 import React from "react";
 import { Link, useParams } from "react-router";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 function IssueDetails() {
-  const { id } = useParams();
+  //   const { id } = useParams();
 
-  // Example static issue data
-  const issue = {
-    id,
-    title: "Broken Streetlight",
-    category: "Infrastructure",
-    status: "Pending",
-    priority: "Normal",
-    location: "Main Road, Sector 5",
-    description: "Streetlight near the main road is broken and needs repair.",
-    image: "https://via.placeholder.com/600x300.png?text=Streetlight",
-    upvotes: 12,
-    submittedBy: "citizen123",
-    assignedStaff: { name: "John Doe", role: "Maintenance Staff" },
-    boosted: false,
-  };
+  //   // Example static issue data
+  //   const issue = {
+  //     id,
+  //     title: "Broken Streetlight",
+  //     category: "Infrastructure",
+  //     status: "Pending",
+  //     priority: "Normal",
+  //     location: "Main Road, Sector 5",
+  //     description: "Streetlight near the main road is broken and needs repair.",
+  //     image: "https://via.placeholder.com/600x300.png?text=Streetlight",
+  //     upvotes: 12,
+  //     submittedBy: "citizen123",
+  //     assignedStaff: { name: "John Doe", role: "Maintenance Staff" },
+  //     boosted: false,
+  //   };
 
   // Example static timeline
   const timeline = [
@@ -48,12 +50,33 @@ function IssueDetails() {
     },
   ];
 
-  // Example logged-in user
-  const loggedInUser = "citizen123";
+  //   // Example logged-in user
+  //   const loggedInUser = "citizen123";
 
+  const { issueId } = useParams();
+  console.log("IssueDetails - issueId from params:", issueId); // Debug log
+  const axiosSecure = useAxiosSecure();
+
+  const { isLoading, data: issue } = useQuery({
+    queryKey: ["issues", issueId],
+    queryFn: async () => {
+      console.log("Fetching issue with ID:", issueId); // Debug log
+      const res = await axiosSecure.get(`/issues/${issueId}`);
+      console.log("Issue data received:", res.data); // Debug log
+      return res.data;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div>
+        <span className="loading loading-spinner loading-xl"></span>
+      </div>
+    );
+  }
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6 text-primary">{issue.title}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-primary">Issue Details</h1>
 
       {/* Issue Info */}
       <div className="card bg-base-100 shadow-md mb-8">
@@ -112,18 +135,14 @@ function IssueDetails() {
 
           {/* Action Buttons */}
           <div className="card-actions mt-6 flex gap-4">
-            {loggedInUser === issue.submittedBy &&
-              issue.status === "Pending" && (
-                <button className="btn btn-warning">Edit</button>
-              )}
-            {loggedInUser === issue.submittedBy && (
-              <button className="btn btn-error">Delete</button>
-            )}
+            <button className="btn btn-warning">Edit</button>
+
+            <button className="btn btn-error">Delete</button>
             {issue.paymentStatus === "paid" ? (
               <p className="btn btn-info">Boosted</p>
             ) : (
               <Link
-                to={`/dashboard/payment/${issue.id}`}
+                to={`/dashboard/payment/${issue._id}`}
                 className="btn btn-accent"
               >
                 Boost Priority (100tk)
