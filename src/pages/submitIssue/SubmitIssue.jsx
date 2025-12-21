@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import UseAuth from "../../hooks/UseAuth";
+import { useNavigate } from "react-router";
 
 const SubmitIssue = () => {
-  const navigate = useNavigate();
-
   // Example user data (replace with real auth/user context)
   //   const user = {
   //     id: "citizen123",
@@ -24,6 +22,8 @@ const SubmitIssue = () => {
   const { user } = UseAuth();
 
   const axiosSecure = useAxiosSecure();
+
+  const navigate = useNavigate();
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -79,6 +79,12 @@ const SubmitIssue = () => {
 
         axiosSecure.post("/issues", data).then((res) => {
           console.log("after saving parcel", res.data);
+          Swal.fire({
+            title: "Issued!",
+            text: "Your issue has been submitted",
+            icon: "success",
+          });
+          navigate("/all-issues");
         });
         // Swal.fire({
         //   title: "issued!",
